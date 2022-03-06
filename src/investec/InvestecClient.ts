@@ -1,9 +1,12 @@
 import {request as httpRequest} from 'undici'
-import {Account, Balance, Transaction, TransactionFilters, TransactionType} from './types'
-import {getTransactionURLParams} from './utils'
+import {Account, Balance, Transaction, TransactionType} from './apiTypes'
+import {DateRangeFilter, TransactionFilters} from './types'
+import {getTransactionURLParams, validateStatusCode} from './utils'
+
+export const INVESTEC_API_URL = process.env.INVESTEC_API_URL || 'https://openapi.investec.com/za/pb/v1'
 
 export class InvestecClient {
-    private apiUrl = process.env.INVESTEC_API_URL || 'https://openapi.investec.com/za/pb/v1'
+    private apiUrl = INVESTEC_API_URL
     protected accessToken: Promise<string> | undefined = undefined
     protected clientId: string
     protected clientSecret: string
@@ -23,7 +26,7 @@ export class InvestecClient {
         return balance
     }
 
-    public async getDeposits(accountId: string, params: Omit<TransactionFilters, 'type'> = {}) {
+    public async getDeposits(accountId: string, params: DateRangeFilter = {}) {
         return this.getTransactions(accountId, {
             type: TransactionType.Deposits,
             ...params,
@@ -52,9 +55,10 @@ export class InvestecClient {
                 },
                 method: 'GET',
             })
-            if (statusCode !== 200) throw new Error(`Error fetching data for: ${endpoint}`)
-            const {data} = await body.json()
 
+            validateStatusCode(statusCode)
+
+            const {data} = await body.json()
             return data as Response
         } catch (error) {
             throw error
@@ -62,6 +66,9 @@ export class InvestecClient {
     }
 
     private async requestAccessToken() {
+        if (!(this.clientId.length && this.clientSecret.length))
+            throw new Error('Missing Investec API client credentials')
+
         const url = process.env.INVESTEC_TOKEN_URL || 'https://openapi.investec.com/identity/v2/oauth2/token'
 
         const authHeader = 'Basic ' + Buffer.from(this.clientId + ':' + this.clientSecret).toString('base64')
@@ -74,9 +81,10 @@ export class InvestecClient {
             method: 'POST',
             body: 'grant_type=client_credentials&scope=accounts',
         })
-        if (statusCode !== 200) throw new Error('could not authenticate')
-        const data = await body.json()
 
+        validateStatusCode(statusCode)
+
+        const data = await body.json()
         return data.access_token as string
     }
 
