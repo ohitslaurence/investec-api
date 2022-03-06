@@ -1,14 +1,29 @@
 {
-  "name": "investec-api",
-  "private": true,
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "^4.5.4",
-    "vite": "^2.8.0"
-  }
+    "name": "investec-api",
+    "private": false,
+    "version": "0.0.0",
+    "license": "MIT",
+    "scripts": {
+        "start": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "typescript": "^4.5.4",
+        "vite": "^2.8.0"
+    },
+    "files": [
+        "dist"
+    ],
+    "main": "./dist/investec-api.umd.js",
+    "module": "./dist/investec-api.es.js",
+    "exports": {
+        ".": {
+            "import": "./dist/investec-api.es.js",
+            "require": "./dist/my-lib.umd.js"
+        }
+    },
+    "dependencies": {
+        "undici": "^4.15.0"
+    }
 }
