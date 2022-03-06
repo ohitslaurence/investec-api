@@ -1,6 +1,5 @@
 import hash from 'object-hash'
-import {Transaction, TransactionType} from './apiTypes'
-import {TransactionFilters} from './types'
+import {Transaction, TransactionType, TransactionFilters} from './types'
 
 const validateTransactionFilters = (params: TransactionFilters) => {
     if (params.type) {

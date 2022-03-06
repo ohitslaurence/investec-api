@@ -1,4 +1,4 @@
-import {TransactionType} from './apiTypes'
+import {TransactionType} from './types'
 import {getTransactionURLParams} from './utils'
 
 describe('getTransactionURLParams', () => {
