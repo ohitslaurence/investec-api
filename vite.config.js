@@ -14,8 +14,8 @@ module.exports = defineConfig({
     ],
     build: {
         lib: {
-            entry: resolve(__dirname, 'src/main.ts'),
-            name: 'InvestecOpenApi',
+            entry: resolve(__dirname, 'src/investec-api.ts'),
+            name: 'InvestecApi',
             fileName: (format) => `investec-api.${format}.js`,
         },
         rollupOptions: {},
