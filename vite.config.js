@@ -1,10 +1,20 @@
-const path = require('path')
-const {defineConfig} = require('vite')
+import typescript from '@rollup/plugin-typescript'
+import {resolve} from 'path'
+import {defineConfig} from 'vite'
 
 module.exports = defineConfig({
+    plugins: [
+        {
+            ...typescript({tsconfig: './tsconfig.json'}),
+            apply: 'build',
+            declaration: true,
+            declarationDir: 'types/',
+            rootDir: '/',
+        },
+    ],
     build: {
         lib: {
-            entry: path.resolve(__dirname, 'src/main.ts'),
+            entry: resolve(__dirname, 'src/main.ts'),
             name: 'InvestecOpenApi',
             fileName: (format) => `investec-api.${format}.js`,
         },
