@@ -1,13 +1,14 @@
 {
     "name": "@ohitslaurence/investec-api",
     "private": false,
-    "version": "0.1.2",
+    "version": "0.1.4",
     "license": "MIT",
     "scripts": {
         "start": "vite",
         "build": "rimraf dist && tsc && vite build",
         "preview": "vite preview",
-        "test": "jest"
+        "test": "jest",
+        "prepublish": "tsc && vite build"
     },
     "dependencies": {
         "object-hash": "^3.0.0",
@@ -29,12 +30,12 @@
         "dist"
     ],
     "main": "./dist/investec-api.umd.js",
-    "types": "./dist/index.d.ts",
+    "types": "./dist/investec-api.d.ts",
     "module": "./dist/investec-api.es.js",
     "exports": {
         ".": {
             "import": "./dist/investec-api.es.js",
-            "require": "./dist/my-lib.umd.js"
+            "require": "./dist/investec-api.umd.js"
         }
     }
 }
