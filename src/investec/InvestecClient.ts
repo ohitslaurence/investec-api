@@ -1,6 +1,7 @@
 import {request as httpRequest} from 'undici'
 import {Account, Balance, DateRangeFilter, Transaction, TransactionFilters, TransactionType} from './types'
-import {getTransactionURLParams, validateStatusCode} from './utils'
+import {getTransactionURLParams} from './utils'
+import {validateStatusCode} from './validation'
 
 export const INVESTEC_API_URL = process.env.INVESTEC_API_URL || 'https://openapi.investec.com/za/pb/v1'
 

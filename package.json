@@ -1,7 +1,7 @@
 {
     "name": "@ohitslaurence/investec-api",
     "private": false,
-    "version": "0.1.8",
+    "version": "0.1.9",
     "license": "MIT",
     "main": "dist/lib/index.js",
     "module": "dist/module/module.index.js",
@@ -24,6 +24,7 @@
         "test:prod": "npm run test -- --no-cache"
     },
     "dependencies": {
+        "date-fns": "^2.28.0",
         "object-hash": "^3.0.0",
         "undici": "^4.15.0"
     },
