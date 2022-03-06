@@ -19,8 +19,8 @@
         "build": "yarn build:main && yarn build:module",
         "build:main": "tsc -p tsconfig.json",
         "build:module": "tsc -p tsconfig.module.json",
-        "test": "jest --coverage",
-        "test:watch": "jest --coverage --watch",
+        "test": "jest",
+        "test:watch": "jest --watch",
         "test:prod": "npm run test -- --no-cache"
     },
     "dependencies": {
