@@ -1,3 +1,4 @@
+import {InvestecClient} from './InvestecClient'
 import {TransactionType} from './types'
 import {getTransactionURLParams} from './utils'
 
@@ -25,9 +26,7 @@ describe('getTransactionURLParams', () => {
     })
 
     it('correctly formats transaction date range given string date', () => {
-        const fromDate = '2022-12-13'
-        const toDate = '2022-12-14'
-        const queryString = getTransactionURLParams({fromDate, toDate})
+        const queryString = getTransactionURLParams({fromDate: '2022-12-13', toDate: '2022-12-14'})
 
         expect(queryString).toEqual('fromDate=2022-12-13&toDate=2022-12-14')
     })
