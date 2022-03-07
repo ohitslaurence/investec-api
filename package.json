@@ -1,7 +1,7 @@
 {
     "name": "@ohitslaurence/investec-api",
     "private": false,
-    "version": "0.1.9",
+    "version": "0.1.10",
     "license": "MIT",
     "main": "dist/lib/index.js",
     "module": "dist/module/module.index.js",
