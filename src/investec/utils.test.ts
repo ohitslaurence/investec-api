@@ -1,4 +1,3 @@
-import {InvestecClient} from './InvestecClient'
 import {TransactionType} from './types'
 import {getTransactionURLParams} from './utils'
 
