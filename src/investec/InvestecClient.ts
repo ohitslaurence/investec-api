@@ -1,9 +1,20 @@
 import {request as httpRequest} from 'undici'
-import {Account, Balance, DateRangeFilter, Transaction, TransactionFilters, TransactionType} from './types'
+import {HttpMethod} from 'undici/types/dispatcher'
+import {
+    Account,
+    Balance,
+    DateRangeFilter,
+    Transaction,
+    TransactionFilters,
+    TransactionType,
+    TransferList,
+    TransferResponse,
+} from './types'
 import {getTransactionURLParams} from './utils'
 import {validateStatusCode} from './validation'
 
 export const INVESTEC_API_URL = process.env.INVESTEC_API_URL || 'https://openapi.investec.com/za/pb/v1'
+const INVESTEC_API_KEY = process.env.INVESTEC_API_KEY || ''
 
 export class InvestecClient {
     private apiUrl = INVESTEC_API_URL
@@ -43,17 +54,34 @@ export class InvestecClient {
         return transactions
     }
 
-    private async request<Response>(endpoint: string, requestHeaders?: Record<string, string>) {
+    public async transfer(from: string, transferList: TransferList[]) {
+        const {transferResponse} = await this.request<{
+            transferResponse: TransferResponse
+        }>(`/accounts/transfermultiple`, 'POST', {
+            AccountId: from,
+            TransferList: transferList,
+        })
+
+        return transferResponse.TransferResponses
+    }
+
+    private async request<Response>(
+        endpoint: string,
+        method: HttpMethod = 'GET',
+        requestBody: Record<string, any> | null = null,
+    ) {
         const url = `${this.apiUrl}${endpoint}`
         const accessToken = await this.getAccessToken()
+        const parsedBody = JSON.stringify(requestBody)
 
         try {
             const {body, statusCode} = await httpRequest(url, {
                 headers: {
+                    'content-type': 'application/json',
                     Authorization: `Bearer ${accessToken}`,
-                    ...requestHeaders,
                 },
-                method: 'GET',
+                method,
+                body: parsedBody,
             })
 
             validateStatusCode(statusCode)
@@ -77,9 +105,10 @@ export class InvestecClient {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 Authorization: authHeader,
+                'x-api-key': INVESTEC_API_KEY,
             },
             method: 'POST',
-            body: 'grant_type=client_credentials&scope=accounts',
+            body: 'grant_type=client_credentials',
         })
 
         validateStatusCode(statusCode)

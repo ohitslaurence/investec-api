@@ -44,3 +44,22 @@ export type DateRangeFilter = {fromDate?: Date | string; toDate?: Date | string}
 export type TransactionFilters = {
     type?: TransactionType
 } & DateRangeFilter
+
+export type TransferList = {
+    BeneficiaryAccountId: string
+    Amount: string
+    MyReference: string
+    TheirReference: string
+}
+
+export type TransferResponse = {
+    TransferResponses: {
+        PaymentReferenceNumber: string
+        PaymentDate: string
+        Status: string
+        BeneficiaryName: string
+        BeneficiaryAccountId: string
+        AuthorisationRequired: boolean
+    }[]
+    ErrorMessage: string | null
+}
